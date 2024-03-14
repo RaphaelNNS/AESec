@@ -16,10 +16,10 @@ public class ClienteService {
 	@Autowired
 	ClienteRepository repository;
 	
-	public Optional<Cliente> findClienteByName(String name) throws EmptyClienteValue {
-		Optional<Cliente> cliente = repository.findClienteByNome(name);
-		if (cliente.isPresent()) {
-			return cliente;
+	public Optional<List<Cliente>> findClienteByName(String name) throws EmptyClienteValue {
+		Optional<List<Cliente>> clientes = repository.findClienteByNome(name);
+		if (clientes.isPresent()) {
+			return clientes;
 		}
 		throw new EmptyClienteValue();
 	}
@@ -32,9 +32,15 @@ public class ClienteService {
 		throw new EmptyClienteValue();
 	}
 	
-	public Cliente addClient(Cliente cliente) {
+	public Cliente addCliente(Cliente cliente) {
 		Cliente client = repository.save(cliente);
 		return client;
 	}
+	
+	public void removeCliente(Long id) {
+		repository.deleteById(id);
+	}
+	
+
 	
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import com.rngam.model.Cliente;
 import com.rngam.service.ClienteService;
 
 @Controller
+@CrossOrigin("*")
 @RequestMapping(value = "/clients")
 public class ClientController {
 	
@@ -25,7 +28,7 @@ public class ClientController {
 	ClienteService clienteService;
 	
 	@GetMapping
-	public ResponseEntity<Optional<List<Cliente>>> getAll(){
+	public ResponseEntity<?> getAll(){
 		Optional<List<Cliente>> list;
 		try {
 			list = clienteService.findAll();
@@ -37,8 +40,8 @@ public class ClientController {
 	}
 	
 	@GetMapping("/client-name/{clientName}")
-	public ResponseEntity<Optional<Cliente>> getClientByName(@PathVariable("clientName") String name){
-		Optional<Cliente> client;
+	public ResponseEntity<?> getClientByName(@PathVariable("clientName") String name){
+		Optional<List<Cliente>> client;
 		try {
 			client = clienteService.findClienteByName(name);
 			return ResponseEntity.ok(client);
@@ -50,9 +53,17 @@ public class ClientController {
 	
 	@PostMapping
 	public ResponseEntity<?> addClient(@RequestBody Cliente client){
-		Cliente cliente = clienteService.addClient(client);
+		Cliente cliente = clienteService.addCliente(client);
 		return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
 	}
+	
+	@DeleteMapping("/{clienteId}")
+	public ResponseEntity<?> removeCliente(@PathVariable("clienteId") Long id){
+		clienteService.removeCliente(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	
 	
 	
 	

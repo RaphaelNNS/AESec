@@ -11,6 +11,5 @@ import com.rngam.model.Contrato;
 public interface ContratoRepository extends JpaRepository<Contrato, Long> {
 	
 	
-	public Optional<Contrato> findContratoByNome(String name);
-
+ 
 }

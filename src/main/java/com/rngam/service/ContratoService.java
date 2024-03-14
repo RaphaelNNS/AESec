@@ -16,13 +16,7 @@ public class ContratoService {
 	@Autowired
 	ContratoRepository repository;
 	
-	public Optional<Contrato> findContratoByName(String name) throws EmptyContratoValue {
-		Optional<Contrato> contrato = repository.findContratoByNome(name);
-		if (contrato.isPresent()) {
-			return contrato;
-		}
-		throw new EmptyContratoValue();
-	}
+	
 	
 	public Optional<List<Contrato>> findAll() throws EmptyContratoValue{
 		Optional<List<Contrato>> list = Optional.of(repository.findAll());
@@ -36,4 +30,6 @@ public class ContratoService {
 		Contrato contract = repository.save(contrato);
 		return contract;
 	}
+	
+	
 }
