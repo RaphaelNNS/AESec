@@ -1,16 +1,21 @@
 package com.rngam.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class Cliente {
+public class ClientModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long clientId;
@@ -19,7 +24,10 @@ public class Cliente {
 	@Column(nullable = true, length = 14, unique = true)
 	String CNPJ;
 	@Column(nullable = true, length = 128)
-	String nome;
+	String name;
 	@Column(length = 400)
-	String endereco;
+	String adress;
+	@JsonIgnore
+	@ManyToMany
+	List<ContractModel> contractList;
 }

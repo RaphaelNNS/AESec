@@ -9,39 +9,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.rngam.exceptions.EmptyContratoValue;
-import com.rngam.model.Contrato;
-import com.rngam.service.ContratoService;
+import com.rngam.model.ClientModel;
+import com.rngam.model.ContractModel;
+import com.rngam.service.ContractService;
 
 @Controller
-@RequestMapping
+@RequestMapping("contracts")
 public class ContractController {
 	
 	@Autowired
-	ContratoService contratoService;
+	ContractService contractService;
 	
 	@GetMapping
 	public ResponseEntity<?> getAll(){
-		try {
-			return ResponseEntity.ok(contratoService.findAll());
-		} catch (EmptyContratoValue e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(contractService.findAll());
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> addContrato(@RequestBody Contrato contrato){
-		Contrato AddedContrato = contratoService.addClient(contrato);
-		return ResponseEntity.status(HttpStatus.CREATED).body(AddedContrato);
+	public ResponseEntity<?> addContrato(@RequestBody ContractModel contract){
+		Optional<ContractModel> addedContract = Optional.of(contractService.addContract(contract));
+		if (addedContract.isPresent()) {
+			return ResponseEntity.ok(contract);
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 	
-	//@DeleteMapping("/{contratoId}")
-	//public ResponseEntity<?> removeContrato(@PathVariable Long id){
-//
-	//}
+	@DeleteMapping("/{contractId}")
+	public ResponseEntity<?> removeContrato(@PathVariable("contractId") Long id){
+		contractService.removeContractByID(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	//TODO 
+	@PatchMapping("/{contractId}")
+	public ResponseEntity<?> updateList(@RequestBody List<ClientModel> clientList){
+		//ContractModel contractManaged = contractService.
+		return ResponseEntity.ok(null);
+	}
 }

@@ -1,14 +1,13 @@
 package com.rngam.repository;
 
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.rngam.model.Contrato;
+import com.rngam.model.ContractModel;
 
 @Repository
-public interface ContratoRepository extends JpaRepository<Contrato, Long> {
+public interface ContractRepository extends JpaRepository<ContractModel, Long> {
 	
 	
  

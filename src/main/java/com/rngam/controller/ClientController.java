@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.rngam.exceptions.EmptyClienteValue;
-import com.rngam.model.Cliente;
-import com.rngam.service.ClienteService;
+import com.rngam.model.ClientModel;
+import com.rngam.service.ClientService;
 
 @Controller
 @CrossOrigin("*")
@@ -25,41 +24,33 @@ import com.rngam.service.ClienteService;
 public class ClientController {
 	
 	@Autowired
-	ClienteService clienteService;
+	ClientService clientService;
 	
 	@GetMapping
 	public ResponseEntity<?> getAll(){
-		Optional<List<Cliente>> list;
-		try {
-			list = clienteService.findAll();
-			return ResponseEntity.ok(list);
-			
-		} catch (EmptyClienteValue e) {
-			return ResponseEntity.notFound().build();
-		}
+		List<ClientModel> list = clientService.findAll();
+		return ResponseEntity.ok().body(list);
+		
 	}
 	
 	@GetMapping("/client-name/{clientName}")
 	public ResponseEntity<?> getClientByName(@PathVariable("clientName") String name){
-		Optional<List<Cliente>> client;
-		try {
-			client = clienteService.findClienteByName(name);
-			return ResponseEntity.ok(client);
-		} catch (EmptyClienteValue e) {
-			return ResponseEntity.notFound().build();
+		Optional<List<ClientModel>> clientList = Optional.of(clientService.findClientByName(name));
+		if (clientList.isPresent()) {
+			return ResponseEntity.ok(clientList);
 		}
-		
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> addClient(@RequestBody Cliente client){
-		Cliente cliente = clienteService.addCliente(client);
+	public ResponseEntity<?> addClient(@RequestBody ClientModel client){
+		Optional<ClientModel> cliente = Optional.of(clientService.addClient(client));
 		return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
 	}
 	
 	@DeleteMapping("/{clienteId}")
 	public ResponseEntity<?> removeCliente(@PathVariable("clienteId") Long id){
-		clienteService.removeCliente(id);
+		clientService.removeClient(id);
 		return ResponseEntity.noContent().build();
 	}
 	
