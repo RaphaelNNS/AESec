@@ -27,6 +27,7 @@ public class ClientModel {
 	String name;
 	@Column(length = 400)
 	String adress;
+	
 	@JsonIgnore
 	@ManyToMany
 	List<ContractModel> contractList;

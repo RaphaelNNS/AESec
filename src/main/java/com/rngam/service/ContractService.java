@@ -27,6 +27,10 @@ public class ContractService {
 		return list;
 	}
 	
+	public ContractModel findContractById(Long id) {
+		return repository.getOne(id);
+	}
+	
 	public ContractModel addContract(ContractModel contract) {
 		Calendar calendar = Calendar.getInstance();
 		contract.setStartDate(calendar.getTime());

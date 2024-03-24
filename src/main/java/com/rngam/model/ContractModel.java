@@ -20,6 +20,12 @@ public class ContractModel {
 	Long id;
 	Date StartDate;
 	
+	
 	@ManyToMany
 	List<ClientModel> clientList;
+	
+	public void addClient(ClientModel client) {
+		clientList.add(client);
+	}
+	
 }

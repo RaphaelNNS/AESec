@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rngam.model.ClientModel;
 import com.rngam.model.ContractModel;
+import com.rngam.service.ClientService;
 import com.rngam.service.ContractService;
 
 @Controller
@@ -25,10 +26,21 @@ public class ContractController {
 	
 	@Autowired
 	ContractService contractService;
+	@Autowired
+	ClientService  clientService;
 	
 	@GetMapping
 	public ResponseEntity<?> getAll(){
 		return ResponseEntity.ok(contractService.findAll());
+	}
+	
+	@GetMapping("/{clientId}")
+	public ResponseEntity<?> findContractById(@PathVariable("clientId") Long id){
+		Optional<ContractModel> contract =  Optional.of(contractService.findContractById(id));
+		if (contract.isPresent()) {
+			return ResponseEntity.ok(contract);
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
@@ -47,9 +59,11 @@ public class ContractController {
 	}
 	
 	//TODO 
-	@PatchMapping("/{contractId}")
-	public ResponseEntity<?> updateList(@RequestBody List<ClientModel> clientList){
-		//ContractModel contractManaged = contractService.
-		return ResponseEntity.ok(null);
+	@PostMapping("/add-client-to-contract/{contractId}/{clientId}")
+	public ResponseEntity<?> addClientToContract(@PathVariable("contractId")Long contractId, @PathVariable("clientId") Long clientId){
+		ContractModel contract = contractService.findContractById(contractId);
+		ClientModel client = clientService.findClientById(clientId);
+		contract.addClient(client);
+		return ResponseEntity.ok(contract);
 	}
 }
