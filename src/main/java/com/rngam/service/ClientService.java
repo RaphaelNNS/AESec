@@ -1,6 +1,7 @@
 package com.rngam.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ public class ClientService {
 		
 	}
 	
-	public ClientModel findClientById(Long id) {
-		return repository.getOne(id);
+	public Optional<ClientModel> findClientById(Long id) {
+		return repository.findById(id);
 	}
 	
 	public List<ClientModel> findAll(){

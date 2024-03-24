@@ -27,8 +27,8 @@ public class ContractService {
 		return list;
 	}
 	
-	public ContractModel findContractById(Long id) {
-		return repository.getOne(id);
+	public Optional<ContractModel> findContractById(Long id) {
+		return repository.findById(id);
 	}
 	
 	public ContractModel addContract(ContractModel contract) {
@@ -50,5 +50,14 @@ public class ContractService {
 		ContractModel contractUpdated = repository.getOne(contractId);
 		contractUpdated.setClientList(clientList);
 		return contractUpdated;
+	}
+
+	public ContractModel addClientToContract(Long contractId, Long clientId) {
+		ContractModel contract = findContractById(contractId).get();
+		ClientModel client = clientRepository.findById(clientId).get();
+		contract.addClient(client);
+		repository.save(contract);
+		//clientRepository.save(client);
+		return contract;
 	}
 }

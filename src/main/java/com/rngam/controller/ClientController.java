@@ -42,6 +42,15 @@ public class ClientController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	@GetMapping("/client-id/{clientId}")
+	public ResponseEntity<?> getClientById(@PathVariable("clientId") Long id){
+		Optional<ClientModel> clientList = clientService.findClientById(id);
+		if (clientList.isPresent()) {
+			return ResponseEntity.ok(clientList);
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> addClient(@RequestBody ClientModel client){
 		Optional<ClientModel> cliente = Optional.of(clientService.addClient(client));

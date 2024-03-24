@@ -36,7 +36,7 @@ public class ContractController {
 	
 	@GetMapping("/{clientId}")
 	public ResponseEntity<?> findContractById(@PathVariable("clientId") Long id){
-		Optional<ContractModel> contract =  Optional.of(contractService.findContractById(id));
+		Optional<ContractModel> contract =  contractService.findContractById(id);
 		if (contract.isPresent()) {
 			return ResponseEntity.ok(contract);
 		}
@@ -61,9 +61,7 @@ public class ContractController {
 	//TODO 
 	@PostMapping("/add-client-to-contract/{contractId}/{clientId}")
 	public ResponseEntity<?> addClientToContract(@PathVariable("contractId")Long contractId, @PathVariable("clientId") Long clientId){
-		ContractModel contract = contractService.findContractById(contractId);
-		ClientModel client = clientService.findClientById(clientId);
-		contract.addClient(client);
+		ContractModel contract = contractService.addClientToContract(contractId, clientId);
 		return ResponseEntity.ok(contract);
 	}
 }
