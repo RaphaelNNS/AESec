@@ -32,8 +32,6 @@ public class ContractService {
 	}
 	
 	public ContractModel addContract(ContractModel contract) {
-		Calendar calendar = Calendar.getInstance();
-		contract.setStartDate(calendar.getTime());
 		ContractModel contractToBeAdded = repository.save(contract);
 		return contractToBeAdded;
 	}
@@ -57,7 +55,7 @@ public class ContractService {
 		ClientModel client = clientRepository.findById(clientId).get();
 		contract.addClient(client);
 		repository.save(contract);
-		//clientRepository.save(client);
+		clientRepository.save(client);
 		return contract;
 	}
 }
