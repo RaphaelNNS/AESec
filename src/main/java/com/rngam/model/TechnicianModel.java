@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class technicianModel {
+public class TechnicianModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
